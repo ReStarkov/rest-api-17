@@ -1,4 +1,4 @@
-package models.getMethod;
+package models.getuser;
 
 import lombok.Data;
 

@@ -2,12 +2,12 @@ package tests;
 
 
 import jdk.jfr.Description;
-import models.createMethod.CreateBodyRequestModel;
-import models.createMethod.CreateResponseModel;
-import models.getMethod.GetResponseModel;
-import models.getUserList.GetListResponseModel;
-import models.updateMethod.UpdateBodyRequestModel;
-import models.updateMethod.UpdateResponseModel;
+import models.createuser.CreateBodyRequestModel;
+import models.createuser.CreateResponseModel;
+import models.getuser.GetResponseModel;
+import models.getlist.GetListResponseModel;
+import models.updateuser.UpdateBodyRequestModel;
+import models.updateuser.UpdateResponseModel;
 import org.junit.jupiter.api.Test;
 
 
@@ -32,7 +32,8 @@ public class ReqresTest {
         bodyData.setJob(job);
         bodyData.setName(name);
 
-        CreateResponseModel response =  step("Отправка запроса на создание пользователя", () -> given(requestSpec)
+        CreateResponseModel response =  step("Отправка запроса на создание пользователя",
+                () -> given(requestSpec)
                 .body(bodyData)
                 .when()
                 .post("/users")
@@ -53,7 +54,8 @@ public class ReqresTest {
     @Test
     public void getUserDataTest() {
 
-        GetResponseModel response =  step("Отправка запроса на получение данных о пользователе", () -> given(requestSpec)
+        GetResponseModel response =  step("Отправка запроса на получение данных о пользователе",
+                () -> given(requestSpec)
                 .when()
                 .get("/users/2")
                 .then()
@@ -68,14 +70,17 @@ public class ReqresTest {
         step("Проверка значения поля last_name полученного в ответе", () ->
                 assertThat(response.getData()).hasFieldOrPropertyWithValue("last_name","Weaver"));
         step("Проверка значения поля text полученного в ответе", () ->
-                assertThat(response.getSupport()).hasFieldOrPropertyWithValue("text","To keep ReqRes free, contributions towards server costs are appreciated!"));
+                assertThat(response.getSupport()).hasFieldOrPropertyWithValue
+                        ("text","To keep ReqRes free, contributions towards " +
+                                "server costs are appreciated!"));
     }
 
     @Description("Получение данных по списку пользователей, проверка имени во втором объекте массива")
     @Test
     public void getUserListDataTest(){
 
-        GetListResponseModel response = step("Отправка запроса на получение списка пользователей", () -> given(requestSpec)
+        GetListResponseModel response = step("Отправка запроса на получение списка пользователей",
+                () -> given(requestSpec)
                 .when()
                 .get("/users?page=2")
                 .then()
@@ -91,7 +96,8 @@ public class ReqresTest {
     @Test
     public void userNotFoundTest(){
 
-        step("Отправка запроса о несуществующем пользователе, получение статус кода 404 в ответе", () ->given(requestSpec)
+        step("Отправка запроса о несуществующем пользователе, получение статус кода 404 в ответе",
+                () ->given(requestSpec)
                 .when()
                 .get("/users/23")
                 .then()
@@ -110,7 +116,8 @@ public class ReqresTest {
         request.setJob(job);
         request.setName(name);
 
-        UpdateResponseModel response = step("Отправка запроса на обновление данных о пользователе", () ->  given(requestSpec)
+        UpdateResponseModel response = step("Отправка запроса на обновление данных о пользователе",
+                () ->  given(requestSpec)
 
                 .body(request)
                 .when()

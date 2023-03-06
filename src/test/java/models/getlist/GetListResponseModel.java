@@ -1,9 +1,8 @@
-package models.getUserList;
+package models.getlist;
 
 import lombok.Data;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Data
 public class GetListResponseModel {

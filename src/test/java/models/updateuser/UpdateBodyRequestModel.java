@@ -1,4 +1,4 @@
-package models.updateMethod;
+package models.updateuser;
 
 import lombok.Data;
 
