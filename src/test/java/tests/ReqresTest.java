@@ -4,7 +4,6 @@ package tests;
 import jdk.jfr.Description;
 import models.createuser.CreateBodyRequestModel;
 import models.createuser.CreateResponseModel;
-import models.getlist.SupportData;
 import models.getuser.GetResponseModel;
 import models.getlist.GetListResponseModel;
 import models.updateuser.UpdateBodyRequestModel;
@@ -22,7 +21,7 @@ public class ReqresTest {
 
     @Description("Создание пользователя")
     @Test
-    public void createUserTest(){
+    public void createUserTest() {
 
         String id = "339";
         String job = "leader";
@@ -33,15 +32,15 @@ public class ReqresTest {
         bodyData.setJob(job);
         bodyData.setName(name);
 
-        CreateResponseModel response =  step("Отправка запроса на создание пользователя",
+        CreateResponseModel response = step("Отправка запроса на создание пользователя",
                 () -> given(requestSpec)
-                .body(bodyData)
-                .when()
-                .post("/users")
-                .then()
-                .spec(responseSpec)
-                .statusCode(201)
-                .extract().as(CreateResponseModel.class));
+                        .body(bodyData)
+                        .when()
+                        .post("/users")
+                        .then()
+                        .spec(responseSpec)
+                        .statusCode(201)
+                        .extract().as(CreateResponseModel.class));
 
         step("Проверка значения id полученного в ответе", () ->
                 assertThat(response.getId()).isEqualTo(id));
@@ -55,39 +54,39 @@ public class ReqresTest {
     @Test
     public void getUserDataTest() {
 
-        GetResponseModel response =  step("Отправка запроса на получение данных о пользователе",
+        GetResponseModel response = step("Отправка запроса на получение данных о пользователе",
                 () -> given(requestSpec)
-                .when()
-                .get("/users/2")
-                .then()
-                .spec(responseSpec)
-                .statusCode(200)
-                .extract().as(GetResponseModel.class));
+                        .when()
+                        .get("/users/2")
+                        .then()
+                        .spec(responseSpec)
+                        .statusCode(200)
+                        .extract().as(GetResponseModel.class));
 
         step("Проверка значения поля id полученного в ответе", () ->
-                assertThat(response.getData()).hasFieldOrPropertyWithValue("id",2));
+                assertThat(response.getData()).hasFieldOrPropertyWithValue("id", 2));
         step("Проверка значения поля first_name полученного в ответе", () ->
-                assertThat(response.getData()).hasFieldOrPropertyWithValue("first_name","Janet"));
+                assertThat(response.getData()).hasFieldOrPropertyWithValue("first_name", "Janet"));
         step("Проверка значения поля last_name полученного в ответе", () ->
-                assertThat(response.getData()).hasFieldOrPropertyWithValue("last_name","Weaver"));
+                assertThat(response.getData()).hasFieldOrPropertyWithValue("last_name", "Weaver"));
         step("Проверка значения поля text полученного в ответе", () ->
                 assertThat(response.getSupport()).hasFieldOrPropertyWithValue
-                        ("text","To keep ReqRes free, contributions towards " +
+                        ("text", "To keep ReqRes free, contributions towards " +
                                 "server costs are appreciated!"));
     }
 
     @Description("Получение данных по списку пользователей, проверка имени во втором объекте массива")
     @Test
-    public void getUserListDataTest(){
+    public void getUserListDataTest() {
 
         GetListResponseModel response = step("Отправка запроса на получение списка пользователей",
                 () -> given(requestSpec)
-                .when()
-                .get("/users?page=2")
-                .then()
-                .spec(responseSpec)
-                .statusCode(200)
-                .extract().as(GetListResponseModel.class));
+                        .when()
+                        .get("/users?page=2")
+                        .then()
+                        .spec(responseSpec)
+                        .statusCode(200)
+                        .extract().as(GetListResponseModel.class));
 
         step("Проверка значения поля first_name во втором объекте массива data", () ->
                 assertThat(response.getData().get(1)).hasFieldOrPropertyWithValue("first_name", "Lindsay"));
@@ -95,20 +94,20 @@ public class ReqresTest {
 
     @Description("Проверка статус кода, при поиске несуществующего пользователя")
     @Test
-    public void userNotFoundTest(){
+    public void userNotFoundTest() {
 
         step("Отправка запроса о несуществующем пользователе, получение статус кода 404 в ответе",
-                () ->given(requestSpec)
-                .when()
-                .get("/users/23")
-                .then()
-                .spec(responseSpec)
-                .statusCode(404));
+                () -> given(requestSpec)
+                        .when()
+                        .get("/users/23")
+                        .then()
+                        .spec(responseSpec)
+                        .statusCode(404));
     }
 
     @Description("Обновление данных по пользователю")
     @Test
-    public void updateUserTest(){
+    public void updateUserTest() {
 
         String job = "zion resident";
         String name = "morpheus";
@@ -118,35 +117,19 @@ public class ReqresTest {
         request.setName(name);
 
         UpdateResponseModel response = step("Отправка запроса на обновление данных о пользователе",
-                () ->  given(requestSpec)
+                () -> given(requestSpec)
 
-                .body(request)
-                .when()
-                .patch("/users/2")
-                .then()
-                .spec(responseSpec)
-                .statusCode(200)
-                .extract().as(UpdateResponseModel.class));
+                        .body(request)
+                        .when()
+                        .patch("/users/2")
+                        .then()
+                        .spec(responseSpec)
+                        .statusCode(200)
+                        .extract().as(UpdateResponseModel.class));
 
         step("Проверка значения поля name в ответе", () ->
                 assertThat(response.getName()).isEqualTo(name));
         step("Проверка значения поля Job в ответе", () ->
                 assertThat(response.getJob()).isEqualTo(job));
-    }
-    @Description("Проверка поля text в объекте support")
-    @Test
-    public void getSupportTextTest(){
-
-        SupportData response = step("Отправка запроса на получение списка пользователей",
-                () -> given(requestSpec)
-                        .when()
-                        .get("/users?page=2")
-                        .then()
-                        .spec(responseSpec)
-                        .statusCode(200)
-                        .extract().as(SupportData.class));
-
-        step("Проверка значения поля text в объекте support", () ->
-                assertThat(response.getSupport().getText().equalsIgnoreCase("To keep ReqRes free, contributions towards server costs are appreciated!")));
     }
 }
