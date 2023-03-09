@@ -4,6 +4,7 @@ package tests;
 import jdk.jfr.Description;
 import models.createuser.CreateBodyRequestModel;
 import models.createuser.CreateResponseModel;
+import models.getlist.SupportData;
 import models.getuser.GetResponseModel;
 import models.getlist.GetListResponseModel;
 import models.updateuser.UpdateBodyRequestModel;
@@ -131,5 +132,21 @@ public class ReqresTest {
                 assertThat(response.getName()).isEqualTo(name));
         step("Проверка значения поля Job в ответе", () ->
                 assertThat(response.getJob()).isEqualTo(job));
+    }
+    @Description("Проверка поля text в объекте support")
+    @Test
+    public void getSupportTextTest(){
+
+        SupportData response = step("Отправка запроса на получение списка пользователей",
+                () -> given(requestSpec)
+                        .when()
+                        .get("/users?page=2")
+                        .then()
+                        .spec(responseSpec)
+                        .statusCode(200)
+                        .extract().as(SupportData.class));
+
+        step("Проверка значения поля text в объекте support", () ->
+                assertThat(response.getSupport().getText().equalsIgnoreCase("To keep ReqRes free, contributions towards server costs are appreciated!")));
     }
 }
