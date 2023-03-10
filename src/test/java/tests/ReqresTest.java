@@ -1,20 +1,11 @@
 package tests;
 
-
-import io.restassured.response.Response;
 import jdk.jfr.Description;
-import models.createuser.CreateBodyRequestModel;
-import models.createuser.CreateResponseModel;
-import models.getuser.GetResponseModel;
-import models.getlist.GetListResponseModel;
 import models.updateuser.UpdateBodyRequestModel;
-import models.updateuser.UpdateResponseModel;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 
 import static io.qameta.allure.Allure.step;
-import static org.assertj.core.api.Assertions.assertThat;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
